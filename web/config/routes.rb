@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     resources :products, only: :create do
       collection do
         get :count
+        get :without_images
       end
     end
     namespace :webhooks do

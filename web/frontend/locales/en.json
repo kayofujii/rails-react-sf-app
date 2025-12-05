@@ -34,5 +34,10 @@
     },
     "title": "Product Counter",
     "totalProductsHeading": "TOTAL PRODUCTS"
+  },
+  "ProductsWithoutImagesCard": {
+    "emptyHeading": "No products without images found",
+    "emptyDescription": "There are no products without images in your store.",
+    "count": "{{count}} product without image"
   }
 }

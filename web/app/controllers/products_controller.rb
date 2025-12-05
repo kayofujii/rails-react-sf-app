@@ -19,4 +19,12 @@ class ProductsController < AuthenticatedController
     logger.error("Failed to create products: #{e.message}")
     render(json: { success: false, error: e.message }, status: e.try(:code) || :internal_server_error)
   end
+  # GET /api/products/without_images
+  def without_images
+    result = ProductsWithoutImages.call(session: current_shopify_session, id_token: shopify_id_token)
+    render(json: result)
+  rescue StandardError => e
+    logger.error("Failed to retrieve products without images: #{e.message}")
+    render(json: { products: [], error: e.message }, status: e.try(:code) || :internal_server_error)
+  end
 end
