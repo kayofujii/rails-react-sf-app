@@ -22,6 +22,9 @@ export default function HomePage() {
       <TitleBar title={t("HomePage.title")} />
       <Layout>
         <Layout.Section>
+          <ProductsWithoutImagesCard />
+        </Layout.Section>
+        <Layout.Section>
           <Card sectioned>
             <Stack
               wrap={false}
@@ -86,9 +89,6 @@ export default function HomePage() {
         </Layout.Section>
         <Layout.Section>
           <ProductsCard />
-        </Layout.Section>
-        <Layout.Section>
-          <ProductsWithoutImagesCard />
         </Layout.Section>
       </Layout>
     </Page>

@@ -24,7 +24,10 @@ export function ProductsWithoutImagesCard() {
   const products = data?.products || [];
   const shopDomain = data?.shop_domain || "";
   return (
-    <Card>
+    <Card
+    title={t("ProductsWithoutImagesCard.title")}
+    sectioned
+    >
       <ResourceList
         resourceName={{ singular: "product", plural: "products" }}
         items={products}
@@ -38,7 +41,6 @@ export function ProductsWithoutImagesCard() {
           </EmptyState>
         }
         renderItem={(item) => {
-        console.log(item);
           const { id, title, handle } = item;
           const productId = id.split("/").pop();
           const productUrl = shopDomain 
