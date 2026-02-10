@@ -6,11 +6,7 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   scope path: :api, format: :json do
-    resources :products, only: :create do
-      collection do
-        get :count
-      end
-    end
+    resources :products, only: :create
 
     resources :ghost_products, only: :index
 
