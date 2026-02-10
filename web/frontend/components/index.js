@@ -1,3 +1,3 @@
 export { ProductsCard } from "./ProductsCard";
-export { ProductsWithoutImagesCard } from "./ProductsWithoutImagesCard";
+export { GhostProductsCard } from "./GhostProductsCard";
 export * from "./providers";

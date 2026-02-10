@@ -6,13 +6,14 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   scope path: :api, format: :json do
-    # POST /api/products and GET /api/products/count
     resources :products, only: :create do
       collection do
         get :count
-        get :without_images
       end
     end
+
+    resources :ghost_products, only: :index
+
     namespace :webhooks do
       post "/app_uninstalled", to: "app_uninstalled#receive"
       post "/app_scopes_update", to: "app_scopes_update#receive"

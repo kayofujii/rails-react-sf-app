@@ -2,7 +2,7 @@ import { Card, ResourceList, ResourceItem, Text, Stack, EmptyState } from "@shop
 import { useTranslation } from "react-i18next";
 import { useQuery } from "react-query";
 
-export function ProductsWithoutImagesCard() {
+export function GhostProductsCard() {
   const { t } = useTranslation();
 
   const {
@@ -10,9 +10,9 @@ export function ProductsWithoutImagesCard() {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["productsWithoutImages"],
+    queryKey: ["ghostProducts"],
     queryFn: async () => {
-      const response = await fetch("/api/products/without_images");
+      const response = await fetch("/api/ghost_products/");
       if (!response.ok) {
         throw new Error("Failed to fetch products");
       }
@@ -25,7 +25,7 @@ export function ProductsWithoutImagesCard() {
   const shopDomain = data?.shop_domain || "";
   return (
     <Card
-    title={t("ProductsWithoutImagesCard.title")}
+    title={t("GhostProductsCard.title")}
     sectioned
     >
       <ResourceList
@@ -34,8 +34,8 @@ export function ProductsWithoutImagesCard() {
         loading={isLoading}
         emptyState={
           <EmptyState
-            heading={t("ProductsWithoutImagesCard.emptyHeading")}
-            description={t("ProductsWithoutImagesCard.emptyDescription")}
+            heading={t("GhostProductsCard.emptyHeading")}
+            description={t("GhostProductsCard.emptyDescription")}
             image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
           >
           </EmptyState>
@@ -73,7 +73,7 @@ export function ProductsWithoutImagesCard() {
         style={{ borderTop: "1px solid #e1e3e5" }}
         >
             <Text variant="bodySm" tone="subdued" as="p">
-                {t("ProductsWithoutImagesCard.count", { count: products.length })}
+                {t("GhostProductsCard.count", { count: products.length })}
             </Text>
         </div>
       )}

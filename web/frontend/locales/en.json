@@ -35,10 +35,10 @@
     "title": "Product Counter",
     "totalProductsHeading": "TOTAL PRODUCTS"
   },
-  "ProductsWithoutImagesCard": {
-    "title": "Product List Without Images",
-    "emptyHeading": "No products without images found",
-    "emptyDescription": "There are no products without images in your store.",
-    "count": "{{count}} product without image"
+  "GhostProductsCard": {
+    "title": "Ghost Products (No Images)",
+    "emptyHeading": "No ghost products found",
+    "emptyDescription": "All products in your store have images.",
+    "count": "{{count}} ghost product"
   }
 }

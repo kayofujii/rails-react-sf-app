@@ -13,7 +13,7 @@ import { useTranslation, Trans } from "react-i18next";
 
 import { trophyImage } from "../assets";
 
-import { ProductsCard,ProductsWithoutImagesCard } from "../components";
+import { ProductsCard, GhostProductsCard } from "../components";
 
 export default function HomePage() {
   const { t } = useTranslation();
@@ -22,7 +22,7 @@ export default function HomePage() {
       <TitleBar title={t("HomePage.title")} />
       <Layout>
         <Layout.Section>
-          <ProductsWithoutImagesCard />
+          <GhostProductsCard />
         </Layout.Section>
         <Layout.Section>
           <Card sectioned>
