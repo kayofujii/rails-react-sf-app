@@ -1,4 +1,4 @@
-# Shopify App Template - Ruby
+# Shopify App details
 
 A Shopify app built with Ruby on Rails and React that helps merchants spot “ghost products” (products without images) and quickly seed their store with sample coffee products.
 
@@ -17,6 +17,7 @@ A Shopify app built with Ruby on Rails and React that helps merchants spot “gh
   - Each product gets size variants and a randomized title like “bold espresso”.
 
 Relevant code:
+
 - `web/app/services/products_without_images.rb`
 - `web/app/services/product_creator.rb`
 - `web/frontend/components/GhostProductsCard.jsx`
