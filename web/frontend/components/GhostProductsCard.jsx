@@ -1,17 +1,25 @@
-import { EmptyState, Text } from "@shopify/polaris";
+import {
+  IndexTable,
+  LegacyCard,
+  Text,
+  Badge,
+  Button,
+  Link,
+  EmptyState,
+  SkeletonBodyText,
+} from "@shopify/polaris";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "react-query";
 
 export function GhostProductsCard() {
   const { t } = useTranslation();
 
+  // Fetching data from your Rails/Node API
   const { data, isLoading } = useQuery({
     queryKey: ["ghostProducts"],
     queryFn: async () => {
       const response = await fetch("/api/ghost_products/");
-      if (!response.ok) {
-        throw new Error("Failed to fetch products");
-      }
+      if (!response.ok) throw new Error("Failed to fetch products");
       return await response.json();
     },
     refetchOnWindowFocus: false,
@@ -20,63 +28,76 @@ export function GhostProductsCard() {
   const products = data?.products || [];
   const shopDomain = data?.shop_domain || "";
 
-  const rows = products.map((item, index) => {
+  const resourceName = { singular: "product", plural: "products" };
+
+  const rowMarkup = products.map((item, index) => {
     const productId = item.id.split("/").pop();
-    const productUrl = shopDomain
-      ? `https://admin.shopify.com/store/${shopDomain}/products/${productId}`
-      : "#";
+    const adminUrl = `https://admin.shopify.com/store/${shopDomain}/products/${productId}`;
+    const liveUrl = `https://${shopDomain}/products/${item.handle}`;
 
     return (
-      <s-table-row id={productId} key={productId}>
-        <s-table-cell>
-          <s-text>{item.sku || t("GhostProductsCard.noSku")}</s-text>
-        </s-table-cell>
-        <s-table-cell>
-          <s-text>{item.title}</s-text>
-        </s-table-cell>
-        <s-table-cell>
-          <a
-            href={`https://${shopDomain}/products/${item.handle}`}
-            target="_blank"
-            rel="noopener noreferrer"
+      <IndexTable.Row id={item.id} key={item.id} position={index}>
+        <IndexTable.Cell>
+          <Link removeUnderline url={adminUrl} key={`admin-link-${item.id}`}>
+            {item.sku || (
+              <Text tone="subdued">{t("GhostProductsCard.noSku")}</Text>
+            )}
+          </Link>
+        </IndexTable.Cell>
+        <IndexTable.Cell>
+          <Text variant="bodyMd" as="span">
+            {item.title}
+          </Text>
+        </IndexTable.Cell>
+        <IndexTable.Cell>
+          <Link
+            url={liveUrl}
+            external
+            onClick={(event) => event.stopPropagation()}
           >
-            https://{shopDomain}/products/{item.handle}
-          </a>
-        </s-table-cell>
-        <s-table-cell>
-          <s-button variant="auto" icon="edit" href={productUrl} target="_top">
-            Edit
-          </s-button>
-        </s-table-cell>
-      </s-table-row>
+            {liveUrl}
+          </Link>
+        </IndexTable.Cell>
+      </IndexTable.Row>
     );
   });
 
+  // Loading State
+  if (isLoading) {
+    return (
+      <LegacyCard sectioned>
+        <SkeletonBodyText lines={5} />
+      </LegacyCard>
+    );
+  }
+
   return (
-    <s-section heading={t("GhostProductsCard.title")}>
-      <s-table>
-        <s-table-header-row>
-          <s-table-header>{t("GhostProductsCard.sku")}</s-table-header>
-          <s-table-header>{t("GhostProductsCard.product")}</s-table-header>
-          <s-table-header>{t("GhostProductsCard.liveUrl")}</s-table-header>
-          <s-table-header>{t("GhostProductsCard.action")}</s-table-header>
-        </s-table-header-row>
-        <s-table-body>
-          {products.length === 0 && !isLoading ? (
-            <s-table-row>
-              <s-table-cell colspan="3" align="center">
-                <EmptyState
-                  heading={t("GhostProductsCard.emptyHeading")}
-                  description={t("GhostProductsCard.emptyDescription")}
-                  image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
-                />
-              </s-table-cell>
-            </s-table-row>
-          ) : (
-            rows
-          )}
-        </s-table-body>
-      </s-table>
-    </s-section>
+    <LegacyCard>
+      <IndexTable
+        resourceName={resourceName}
+        itemCount={products.length}
+        headings={[
+          { title: t("GhostProductsCard.sku") },
+          { title: t("GhostProductsCard.product") },
+          { title: t("GhostProductsCard.liveUrl") },
+        ]}
+        selectable={false}
+      >
+        {products.length === 0 ? (
+          <IndexTable.Row>
+            <IndexTable.Cell colSpan={4}>
+              <EmptyState
+                heading={t("GhostProductsCard.emptyHeading")}
+                image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
+              >
+                <p>{t("GhostProductsCard.emptyDescription")}</p>
+              </EmptyState>
+            </IndexTable.Cell>
+          </IndexTable.Row>
+        ) : (
+          rowMarkup
+        )}
+      </IndexTable>
+    </LegacyCard>
   );
 }

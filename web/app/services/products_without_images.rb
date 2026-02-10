@@ -51,33 +51,34 @@ class ProductsWithoutImages < ApplicationService
         client.query(query: GET_PRODUCTS_QUERY, variables: { first: 250, after: after })
       end
 
-      raise StandardError, response.body["errors"].to_s if response.body["errors"]
+      raise StandardError, response.body['errors'].to_s if response.body['errors']
 
-      products = response.body.dig("data", "products") || {}
-      edges = products["edges"] || []
+      products = response.body.dig('data', 'products') || {}
+      edges = products['edges'] || []
 
       edges.each do |edge|
-        node = edge["node"] || {}
-        has_image = node.dig("images", "edges").present?
+        node = edge['node'] || {}
+        has_image = node.dig('images', 'edges').present?
         next if has_image
-        sku = node.dig("variants", "edges", 0, "node", "sku")
+
+        sku = node.dig('variants', 'edges', 0, 'node', 'sku')
 
         products_without_images << {
-          id: node["id"],
-          title: node["title"],
-          handle: node["handle"],
-          sku: sku,
+          id: node['id'],
+          title: node['title'],
+          handle: node['handle'],
+          sku: sku
         }
       end
 
-      page_info = products["pageInfo"] || {}
-      break unless page_info["hasNextPage"]
+      page_info = products['pageInfo'] || {}
+      break unless page_info['hasNextPage']
 
-      after = page_info["endCursor"]
+      after = page_info['endCursor']
     end
 
     # Extract shop domain from session (remove .myshopify.com if present)
-    shop_domain = @session.shop&.gsub(".myshopify.com", "")
+    shop_domain = @session.shop&.gsub('.myshopify.com', '')
     {
       products: products_without_images,
       shop_domain: shop_domain

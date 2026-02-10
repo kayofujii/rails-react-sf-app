@@ -5,17 +5,6 @@ class ProductCreator < ApplicationService
 
   attr_reader :count
 
-  CREATE_PRODUCTS_MUTATION = <<~QUERY
-    mutation populateProduct($title: String!) {
-      productCreate(input: {title: $title}) {
-        product {
-          title
-          id
-        }
-      }
-    }
-  QUERY
-
   def initialize(count:, session:, id_token:)
     super
     @count = count
@@ -26,14 +15,23 @@ class ProductCreator < ApplicationService
   def call
     count.times do
       response = with_token_refetch(@session, @id_token) do
-        client = ShopifyAPI::Clients::Graphql::Admin.new(session: @session)
-        client.query(query: CREATE_PRODUCTS_MUTATION, variables: { title: random_title })
+        client = ShopifyAPI::Clients::Rest::Admin.new(session: @session)
+        client.post(
+          path: 'products.json',
+          body: {
+            product: {
+              title: random_title,
+              options: [{ name: 'Size', values: SIZES }],
+              variants: build_variants
+            }
+          }
+        )
       end
 
-      raise StandardError, response.body["errors"].to_s if response.body["errors"]
+      raise StandardError, response.body['errors'].to_s if response.body['errors']
 
-      created_product = response.body.dig("data", "productCreate", "product")
-      Rails.logger.info("Created Product | Title: '#{created_product["title"]}' | Id: '#{created_product["id"]}'")
+      created_product = response.body['product']
+      Rails.logger.info("Created Product | Title: '#{created_product['title']}' | Id: '#{created_product['id']}'")
     end
   end
 
@@ -43,71 +41,16 @@ class ProductCreator < ApplicationService
     "#{ADJECTIVES.sample} #{NOUNS.sample}"
   end
 
-  ADJECTIVES = [
-    "autumn",
-    "hidden",
-    "bitter",
-    "misty",
-    "silent",
-    "empty",
-    "dry",
-    "dark",
-    "summer",
-    "icy",
-    "delicate",
-    "quiet",
-    "white",
-    "cool",
-    "spring",
-    "winter",
-    "patient",
-    "twilight",
-    "dawn",
-    "crimson",
-    "wispy",
-    "weathered",
-    "blue",
-    "billowing",
-    "broken",
-    "cold",
-    "damp",
-    "falling",
-    "frosty",
-    "green",
-    "long",
-  ].freeze
+  def build_variants
+    SIZES.map do |size|
+      {
+        sku: "SKU-#{SecureRandom.hex(4)}",
+        option1: size
+      }
+    end
+  end
 
-  NOUNS = [
-    "waterfall",
-    "river",
-    "breeze",
-    "moon",
-    "rain",
-    "wind",
-    "sea",
-    "morning",
-    "snow",
-    "lake",
-    "sunset",
-    "pine",
-    "shadow",
-    "leaf",
-    "dawn",
-    "glitter",
-    "forest",
-    "hill",
-    "cloud",
-    "meadow",
-    "sun",
-    "glade",
-    "bird",
-    "brook",
-    "butterfly",
-    "bush",
-    "dew",
-    "dust",
-    "field",
-    "fire",
-    "flower",
-  ].freeze
+  ADJECTIVES = %w[cozy bold smooth velvety rich creamy dark bright mellow nutty].freeze
+  NOUNS = %w[espresso latte cappuccino macchiato mocha americano coldbrew roast].freeze
+  SIZES = ['12oz', '2.5lb', '5lb (SAVE 5%)'].freeze
 end

@@ -1,11 +1,6 @@
 {
   "HomePage": {
-    "heading": "Gute Arbeit beim Erstellen einer Shopify-App 🎉",
-    "learnMore": "Erhalte mehr Informationen zum Ausbau deiner App in <ShopifyTutorialLink>diesem Shopify-Tutorial</ShopifyTutorialLink> 📚",
-    "startPopulatingYourApp": "Bist du bereit? Stelle in deiner App einige Beispielprodukte bereit, um sie in deinem Shop anzuzeigen und zu testen.",
-    "title": "App-Name",
-    "trophyAltText": "Gute Arbeit beim Erstellen einer Shopify-App",
-    "yourAppIsReadyToExplore": "Deine App kann nun erkundet werden! Sie enthält alles, was du brauchst, um loszulegen: das <PolarisLink>Polaris Designsystem</PolarisLink>, die <AdminApiLink>Shopify Admin API</AdminApiLink> und die <AppBridgeLink>App Bridge</AppBridgeLink>-UI-Bibliothek sowie entsprechende Komponenten."
+    "title": "Ghost Product Finder"
   },
   "NavigationMenu": {
     "pageName": "Seitenname"
@@ -22,23 +17,14 @@
     "title": "Seitenname"
   },
   "ProductsCard": {
-    "description": "Beispielprodukte werden mit einem Standardtitel und -preis erstellt. Du kannst sie jederzeit entfernen.",
     "errorCreatingProductsToast": "Beim Erstellen von Produkten ist ein Fehler aufgetreten",
-    "populateProductsButton": {
-      "one": "{{count}} Produkt bereitstellen",
-      "other": "{{count}} Produkte bereitstellen"
-    },
+    "addProductsButton": "Produkte hinzufügen",
+    "addProductsButtonAccessibilityLabel": "Beispielprodukte hinzufügen",
     "productsCreatedToast": {
       "one": "{{count}} Produkt erstellt!",
       "other": "{{count}} Produkte erstellt!"
     },
-    "title": "Produktzähler",
-    "totalProductsHeading": "PRODUKTE INSGESAMT"
-  },
-  "GhostProductFinder": {
-    "title": "Ghost Product Finder",
-    "tagline": "Produkte ohne Bilder schnell finden",
-    "description": "Erkenne fehlende Produktbilder, lade Korrekturen gesammelt hoch und halte den Katalog visuell vollständig."
+    "title": "Beispielprodukte erstellen"
   },
   "GhostProductsCard": {
     "sku": "SKU",
