@@ -34,5 +34,20 @@
     },
     "title": "Produktzähler",
     "totalProductsHeading": "PRODUKTE INSGESAMT"
+  },
+  "GhostProductFinder": {
+    "title": "Ghost Product Finder",
+    "tagline": "Produkte ohne Bilder schnell finden",
+    "description": "Erkenne fehlende Produktbilder, lade Korrekturen gesammelt hoch und halte den Katalog visuell vollständig."
+  },
+  "GhostProductsCard": {
+    "sku": "SKU",
+    "product": "Produkt",
+    "liveUrl": "Live-URL",
+    "action": "Aktion",
+    "noSku": "Keine SKU",
+    "emptyHeading": "Keine Ghost-Produkte gefunden",
+    "emptyDescription": "Alle Produkte in deinem Shop haben Bilder.",
+    "count": "{{count}} Ghost-Produkt"
   }
 }

@@ -11,12 +11,14 @@
     "deploy": "shopify app deploy",
     "info": "shopify app info"
   },
-  "dependencies": {},
   "author": "kayofujii",
   "private": true,
   "workspaces": [
     "extensions/*",
     "web",
     "web/frontend"
-  ]
+  ],
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^6.0.2"
+  }
 }

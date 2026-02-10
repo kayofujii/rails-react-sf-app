@@ -7,7 +7,7 @@ import { GhostProductsCard } from "../components";
 export default function HomePage() {
   const { t } = useTranslation();
   return (
-    <Page narrowWidth>
+    <Page>
       <TitleBar title={t("HomePage.title")} />
       <Layout>
         <Layout.Section>

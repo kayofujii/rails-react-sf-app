@@ -1,15 +1,11 @@
-import { Card, ResourceList, ResourceItem, Text, Stack, EmptyState } from "@shopify/polaris";
+import { EmptyState, Text } from "@shopify/polaris";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "react-query";
 
 export function GhostProductsCard() {
   const { t } = useTranslation();
 
-  const {
-    data,
-    isLoading,
-    refetch,
-  } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["ghostProducts"],
     queryFn: async () => {
       const response = await fetch("/api/ghost_products/");
@@ -23,60 +19,64 @@ export function GhostProductsCard() {
 
   const products = data?.products || [];
   const shopDomain = data?.shop_domain || "";
-  return (
-    <Card
-    title={t("GhostProductsCard.title")}
-    sectioned
-    >
-      <ResourceList
-        resourceName={{ singular: "product", plural: "products" }}
-        items={products}
-        loading={isLoading}
-        emptyState={
-          <EmptyState
-            heading={t("GhostProductsCard.emptyHeading")}
-            description={t("GhostProductsCard.emptyDescription")}
-            image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
+
+  const rows = products.map((item, index) => {
+    const productId = item.id.split("/").pop();
+    const productUrl = shopDomain
+      ? `https://admin.shopify.com/store/${shopDomain}/products/${productId}`
+      : "#";
+
+    return (
+      <s-table-row id={productId} key={productId}>
+        <s-table-cell>
+          <s-text>{item.sku || t("GhostProductsCard.noSku")}</s-text>
+        </s-table-cell>
+        <s-table-cell>
+          <s-text>{item.title}</s-text>
+        </s-table-cell>
+        <s-table-cell>
+          <a
+            href={`https://${shopDomain}/products/${item.handle}`}
+            target="_blank"
+            rel="noopener noreferrer"
           >
-          </EmptyState>
-        }
-        renderItem={(item) => {
-          const { id, title, handle } = item;
-          const productId = id.split("/").pop();
-          const productUrl = shopDomain 
-          ? `https://admin.shopify.com/store/${shopDomain}/products/${productId}`
-          : `#`;
-          return (
-            <ResourceItem
-              id={productId}
-              url={productUrl}
-              accessibilityLabel={`View ${title}`}
-            >
-              <Stack>
-                <Stack.Item fill>
-                  <Text variant="bodyMd" fontWeight="bold" as="h3">
-                    {title}
-                  </Text>
-                  <div className="p-1">
-                    <Text variant="bodySm" tone="subdued" as="span">
-                      {handle}
-                    </Text>
-                  </div>
-                </Stack.Item>
-              </Stack>
-            </ResourceItem>
-          );
-        }}
-      />
-      {products.length > 0 && (
-        <div className="p-4"
-        style={{ borderTop: "1px solid #e1e3e5" }}
-        >
-            <Text variant="bodySm" tone="subdued" as="p">
-                {t("GhostProductsCard.count", { count: products.length })}
-            </Text>
-        </div>
-      )}
-    </Card>
+            https://{shopDomain}/products/{item.handle}
+          </a>
+        </s-table-cell>
+        <s-table-cell>
+          <s-button variant="auto" icon="edit" href={productUrl} target="_top">
+            Edit
+          </s-button>
+        </s-table-cell>
+      </s-table-row>
+    );
+  });
+
+  return (
+    <s-section heading={t("GhostProductsCard.title")}>
+      <s-table>
+        <s-table-header-row>
+          <s-table-header>{t("GhostProductsCard.sku")}</s-table-header>
+          <s-table-header>{t("GhostProductsCard.product")}</s-table-header>
+          <s-table-header>{t("GhostProductsCard.liveUrl")}</s-table-header>
+          <s-table-header>{t("GhostProductsCard.action")}</s-table-header>
+        </s-table-header-row>
+        <s-table-body>
+          {products.length === 0 && !isLoading ? (
+            <s-table-row>
+              <s-table-cell colspan="3" align="center">
+                <EmptyState
+                  heading={t("GhostProductsCard.emptyHeading")}
+                  description={t("GhostProductsCard.emptyDescription")}
+                  image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
+                />
+              </s-table-cell>
+            </s-table-row>
+          ) : (
+            rows
+          )}
+        </s-table-body>
+      </s-table>
+    </s-section>
   );
 }

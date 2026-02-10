@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "04fed4bfff2e0a6212d05f030cc33ac9"
-name = "rails-react-sf-app"
+name = "Ghost Product Finder"
 application_url = "https://example.com"
 embedded = true
 

@@ -15,6 +15,13 @@ class ProductsWithoutImages < ApplicationService
             id
             title
             handle
+            variants(first: 1) {
+              edges {
+                node {
+                  sku
+                }
+              }
+            }
             images(first: 1) {
               edges {
                 node {
@@ -53,11 +60,13 @@ class ProductsWithoutImages < ApplicationService
         node = edge["node"] || {}
         has_image = node.dig("images", "edges").present?
         next if has_image
+        sku = node.dig("variants", "edges", 0, "node", "sku")
 
         products_without_images << {
           id: node["id"],
           title: node["title"],
-          handle: node["handle"]
+          handle: node["handle"],
+          sku: sku,
         }
       end
 
